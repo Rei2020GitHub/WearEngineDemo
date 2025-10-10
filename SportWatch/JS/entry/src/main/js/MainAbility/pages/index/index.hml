@@ -1,0 +1,33 @@
+<stack class="stack-parent">
+    <div class="image_container">
+        <image src="{{ imageSrc }}"
+               style="
+                       height: 100%;
+                       width: 100%;
+                       margin-left: 0%;
+                       margin-top: 0%;
+                       "
+                />
+    </div>
+    <text class="message">
+        {{ message }}
+    </text>
+    <input class="button_ping"
+           type="button"
+           value="{{ buttonPingValue }}"
+           @click="onClickButtonPing"
+            >
+    </input>
+    <input class="button_send_text"
+           type="button"
+           value="{{ buttonSendTextValue }}"
+           @click="onClickButtonSendText"
+            >
+    </input>
+    <input class="button_send_file"
+           type="button"
+           value="{{ buttonSendFileValue }}"
+           @click="onClickButtonSendFile"
+            >
+    </input>
+</stack>

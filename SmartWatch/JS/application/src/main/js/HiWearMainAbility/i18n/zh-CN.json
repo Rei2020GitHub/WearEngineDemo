@@ -1,0 +1,8 @@
+{
+  "strings": {
+    "message": "短信",
+    "ping": "Ping",
+    "sendtext": "发送文字",
+    "sendfile": "发送文档"
+  }
+}

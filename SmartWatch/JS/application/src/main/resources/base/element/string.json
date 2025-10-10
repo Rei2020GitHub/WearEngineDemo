@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "HiWearMainAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "HiWearMainAbility_label",
+      "value": "Wear engine demo"
+    }
+  ]
+}

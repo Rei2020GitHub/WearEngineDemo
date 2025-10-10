@@ -1,0 +1,70 @@
+{
+  "app": {
+    "bundleName": "com.huawei.sample.wearable.smartwatch.demo",
+    "vendor": "example",
+    "version": {
+      "code": 1000000,
+      "name": "1.0.0"
+    }
+  },
+  "deviceConfig": {},
+  "module": {
+    "package": "com.huawei.sample.wearable.smartwatch.application",
+    "name": ".application",
+    "mainAbility": ".HiWearMainAbility",
+    "deviceType": [
+      "wearable"
+    ],
+    "distro": {
+      "deliveryWithInstall": true,
+      "moduleName": "application",
+      "moduleType": "entry",
+      "installationFree": false
+    },
+    "abilities": [
+      {
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "action.system.home"
+            ]
+          }
+        ],
+        "orientation": "unspecified",
+        "formsEnabled": false,
+        "name": ".HiWearMainAbility",
+        "srcLanguage": "js",
+        "srcPath": "HiWearMainAbility",
+        "icon": "$media:icon",
+        "description": "$string:HiWearMainAbility_desc",
+        "label": "$string:HiWearMainAbility_label",
+        "type": "page",
+        "visible": true,
+        "launchType": "standard"
+      }
+    ],
+    "js": [
+      {
+        "pages": [
+          "pages/index/index"
+        ],
+        "name": ".HiWearMainAbility",
+        "window": {
+          "designWidth": 720,
+          "autoDesignWidth": false
+        }
+      }
+    ],
+    "metaData": {
+      "customizeData": [
+        {
+          "name": "wearEngineRemoteAppNameList",
+          "value": "com.huawei.sample.wearable.demo"
+        }
+      ]
+    }
+  }
+}

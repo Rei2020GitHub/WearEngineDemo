@@ -1,0 +1,56 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "D:/Project/GitHub/WearEngineDemo/SmartWatch/JS/keystore.p12",
+          "storePassword": "00000018172B7AE4E916DBB9052AEC866ED52D89216BF64A3F43617AF75F7596409D725A7A721767",
+          "keyAlias": "alias",
+          "keyPassword": "00000018A6A4512B182A37FBDDE917BBFC1C3822E36A24DA331B0ACF7EFC01D3DD87CA16E5F02C3C",
+          "signAlg": "SHA256withECDSA",
+          "profile": "D:/Project/GitHub/WearEngineDemo/SmartWatch/JS/Smart Watch Demo - DebugDebug.p7b",
+          "certpath": "D:/Project/GitHub/WearEngineDemo/SmartWatch/JS/Debug cert.cer"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "targetSdkVersion": "5.1.0(18)",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": false
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "application",
+      "srcPath": "./application",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

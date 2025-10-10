@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WearEngineDemo</string>
+    <string name="title_device">Device</string>
+    <string name="title_data">Data</string>
+    <string name="title_file">File</string>
+    <string name="send">Send</string>
+    <string name="stop">Stop</string>
+    <string name="choose_from_storage">Please choose from storage</string>
+</resources>

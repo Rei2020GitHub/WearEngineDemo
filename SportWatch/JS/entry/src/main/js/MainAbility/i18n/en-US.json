@@ -1,0 +1,8 @@
+{
+  "strings": {
+    "message": "Message",
+    "ping": "Ping",
+    "sendtext": "Send Text",
+    "sendfile": "Send File"
+  }
+}
