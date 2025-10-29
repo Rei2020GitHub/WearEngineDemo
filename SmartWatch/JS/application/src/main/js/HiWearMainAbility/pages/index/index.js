@@ -1,6 +1,11 @@
 import { initP2pClient, ping, sendFile, unregisterReceiver } from '../../common/wearEngineManager.js';
 import { FILE_MODE2_READ, FILE_MODE_BINARY, MESSAGE_TYPE_VALUE_TEXT } from '../../common/constant.js';
-import { convertInternalToAbsolute, getMessageData, getMessageType, isImageFile, sendText } from '../../common/util.js';
+import { convertInternalToAbsolute, getMessageData, getMessageType, isImageFile,
+    isJsonFile,
+    isTxtFile,
+    sendText } from '../../common/util.js';
+
+import file from '@system.file';
 
 let filePath;
 let fileInternalPath;
@@ -64,13 +69,20 @@ export default {
                     // internal://app/のファイルパスを絶対パスに変換する
                     filePath = await convertInternalToAbsolute(data.name);
 
-                    // ファイル名を表示する
-                    this.message = filePath;
-
                     // 受信したファイルの拡張子がjpgまたはpngの場合、画像ファイルと仮定し、表示する
                     if (isImageFile(filePath)) {
+                        // ファイル名を表示する
+                        this.message = filePath;
+
                         // 絶対パスで画像ファイルを表示する
                         this.imageSrc = filePath;
+                    }
+                    else if (isJsonFile(filePath) || isTxtFile(filePath)) {
+                        // テキストファイルとしてデータを読み込む
+                        file.readText(this.readTextCallback(data.name));
+                    } else {
+                        // ファイル名を表示する
+                        this.message = filePath;
                     }
                 } else {
                     console.log("messageReceiver() - onReceiveMessage : Type = text, data = " + data);
@@ -83,6 +95,22 @@ export default {
                         sendText("Received: " + message, this.sendTextCallback());
                     }
                 }
+            }.bind(this),
+        }
+    },
+    // テキストファイルを読み込むときのコールバック
+    readTextCallback(uri) {
+        return {
+            uri: uri,
+            success: function(fileData) {
+                // ファイル名を表示する
+                this.message = fileData.name;
+
+                // ファイル内容を表示する
+                this.message = fileData.text;
+            }.bind(this),
+            fail: function(fileData, code) {
+                console.error('call readText fail callback fail, code: ' + code + ', fileData: ' + fileData);
             }.bind(this),
         }
     },

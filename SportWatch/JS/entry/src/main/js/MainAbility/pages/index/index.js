@@ -1,6 +1,8 @@
 import { initP2pClient, ping, sendFile, unregisterReceiver } from '../../common/wearEngineManager.js';
 import { FILE_MODE2_READ, FILE_MODE_BINARY, MESSAGE_TYPE_VALUE_TEXT } from '../../common/constant.js';
-import { getMessageData, getMessageType, isBinFile, sendText } from '../../common/util.js';
+import { getMessageData, getMessageType, isBinFile, isJsonFile, isTxtFile, sendText } from '../../common/util.js';
+
+import file from '@system.file';
 
 export default {
     data: {
@@ -55,12 +57,22 @@ export default {
                 // メッセージの種類がファイルの場合
                 if (data && data.isFileType) {
                     console.log("messageReceiver() - onReceiveMessage : Type = File");
-                    // ファイル名を表示する
-                    this.message = data.name;
 
                     // 受信したファイルの拡張子がbinの場合、画像ファイルと仮定し、表示する
                     if (isBinFile(data.name)) {
+                        // ファイル名を表示する
+                        this.message = data.name;
+
+                        // 画像を表示する
                         this.imageSrc = data.name;
+                    }
+                    // 受信したファイルがjsonまたはtxtの場合
+                    else if (isJsonFile(data.name) || isTxtFile(data.name)) {
+                        // テキストファイルとしてデータを読み込む
+                        file.readText(this.readTextCallback(data.name));
+                    } else {
+                        // ファイル名を表示する
+                        this.message = data.name;
                     }
                 } else
                 // メッセージの種類がファイル以外の場合（テキストの場合）
@@ -75,6 +87,22 @@ export default {
                         sendText("Received: " + message, this.sendTextCallback());
                     }
                 }
+            }.bind(this),
+        }
+    },
+    // テキストファイルを読み込むときのコールバック
+    readTextCallback(uri) {
+        return {
+            uri: uri,
+            success: function(fileData) {
+                // ファイル名を表示する
+                this.message = fileData.name;
+
+                // ファイル内容を表示する
+                this.message = fileData.text;
+            }.bind(this),
+            fail: function(fileData, code) {
+                console.error('call readText fail callback fail, code: ' + code + ', fileData: ' + fileData);
             }.bind(this),
         }
     },

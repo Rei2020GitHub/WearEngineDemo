@@ -49,10 +49,30 @@ const isImageFile = (path) => {
     return false;
 }
 
+// jsonファイルかチェックする
+const isJsonFile = (path) => {
+    // 拡張子がjsonの場合、jsonファイルとみなす
+    if (path.endsWith('.json')) {
+        return true;
+    }
+    return false;
+}
+
+// txtファイルかチェックする
+const isTxtFile = (path) => {
+    // 拡張子がtxtの場合、txtファイルとみなす
+    if (path.endsWith('.txt')) {
+        return true;
+    }
+    return false;
+}
+
 export {
     getMessageType,
     getMessageData,
     sendText,
     convertInternalToAbsolute,
     isImageFile,
+    isJsonFile,
+    isTxtFile,
 }
