@@ -58,6 +58,12 @@
         }
       }
     ],
+    "reqPermissions": [
+      {
+        "name": "ohos.permission.VIBRATE",
+        "reason": "Reason"
+      }
+    ],
     "metaData": {
       "customizeData": [
         {

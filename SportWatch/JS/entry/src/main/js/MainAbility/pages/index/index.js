@@ -3,6 +3,7 @@ import { FILE_MODE2_READ, FILE_MODE_BINARY, MESSAGE_TYPE_VALUE_TEXT } from '../.
 import { getMessageData, getMessageType, isBinFile, isJsonFile, isTxtFile, sendText } from '../../common/util.js';
 
 import file from '@system.file';
+import vibrator from '@system.vibrator';
 
 export default {
     data: {
@@ -54,6 +55,8 @@ export default {
                 console.log("messageReceiver() - onFailure")
             }.bind(this),
             onReceiveMessage: function (data) {
+                vibrator.vibrate(this.vibrateOption());
+
                 // メッセージの種類がファイルの場合
                 if (data && data.isFileType) {
                     console.log("messageReceiver() - onReceiveMessage : Type = File");
@@ -140,8 +143,23 @@ export default {
             }.bind(this),
         }
     },
+    vibrateOption() {
+        return {
+            mode: 'short',
+            success: function(ret) {
+                console.log('vibrate is successful');
+            }.bind(this),
+            fail: function(ret) {
+                console.log('vibrate is failed');
+            }.bind(this),
+            complete: function(ret) {
+                console.log('vibrate is completed');
+            }.bind(this),
+        }
+    },
     onClickButtonPing() {
         ping(this.pingCallback());
+        vibrator.vibrate(this.vibrateOption());
     },
     onClickButtonSendText() {
         sendText("Send Text", this.sendTextCallback());
