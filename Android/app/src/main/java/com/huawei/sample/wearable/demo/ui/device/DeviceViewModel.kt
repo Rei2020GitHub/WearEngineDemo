@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.huawei.sample.wearable.demo.model.Constant
 import com.huawei.wearengine.HiWear
+import com.huawei.wearengine.auth.AuthCallback
 import com.huawei.wearengine.auth.Permission
 import com.huawei.wearengine.common.WearEngineErrorCode
 import com.huawei.wearengine.device.Device
@@ -140,12 +141,47 @@ class DeviceViewModel : ViewModel() {
 
                 _textLog.value = _textLog.value + "checkPermission() addOnSuccessListener() result = $resultText\n"
                 Log.i(LOG_TAG, "checkPermission() addOnSuccessListener() result = $resultText")
+
+                resultArray.forEach { result ->
+                    if (!result) {
+                        requestPermission(context)
+                        return@addOnSuccessListener
+                    }
+                }
             }
             .addOnFailureListener { execption ->
                 _textCheckPermission.postValue("Permission : Unknown")
 
                 _textLog.value = _textLog.value + "checkPermission() addOnFailureListener() execption = $execption" + "\n"
                 Log.e(LOG_TAG, "checkPermission() addOnFailureListener() : ", execption)
+            }
+    }
+
+    // ユーザーにWear Engineの権限を要求する
+    private fun requestPermission(context: Context) {
+        HiWear.getAuthClient(context)
+            .requestPermission(
+                object : AuthCallback {
+                    override fun onOk(permissions: Array<out Permission>?) {
+                        _textLog.value = _textLog.value + "requestPermission() onOk() permissions = " + permissions?.joinToString(separator = ",", transform = { it.name }) + "\n"
+                        Log.i(LOG_TAG, "requestPermission() onOk() permissions = " + permissions?.joinToString(separator = ",", transform = { it.name }))
+                    }
+
+                    override fun onCancel() {
+                        _textLog.value = _textLog.value + "requestPermission() onCancel()\n"
+                        Log.i(LOG_TAG, "requestPermission() onCancel()")
+                    }
+                },
+                Permission.DEVICE_MANAGER,
+                Permission.NOTIFY
+            )
+            .addOnSuccessListener {
+                _textLog.value = _textLog.value + "requestPermission() addOnSuccessListener()\n"
+                Log.i(LOG_TAG, "requestPermission() addOnSuccessListener()")
+            }
+            .addOnFailureListener { execption ->
+                _textLog.value = _textLog.value + "requestPermission() addOnFailureListener() execption = $execption" + "\n"
+                Log.e(LOG_TAG, "requestPermission() addOnFailureListener() : ", execption)
             }
     }
 

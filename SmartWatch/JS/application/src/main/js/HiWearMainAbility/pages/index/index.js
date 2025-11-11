@@ -61,6 +61,7 @@ export default {
                 console.log("messageReceiver() - onFailure")
             }.bind(this),
             onReceiveMessage: async function (data) {
+                // バイブレーションを鳴らす
                 vibrator.vibrate(this.vibrateOption());
 
                 // メッセージの種類がファイルの場合
@@ -151,6 +152,7 @@ export default {
             }.bind(this),
         }
     },
+    // バイブレーションを鳴らすパラメータ
     vibrateOption() {
         return {
             mode: 'short',
@@ -167,6 +169,8 @@ export default {
     },
     onClickButtonPing() {
         ping(this.pingCallback());
+
+        // バイブレーションを鳴らす
         vibrator.vibrate(this.vibrateOption());
     },
     onClickButtonSendText() {

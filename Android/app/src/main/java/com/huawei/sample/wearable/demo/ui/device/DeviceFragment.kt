@@ -18,13 +18,14 @@ class DeviceFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var deviceViewModel: DeviceViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val deviceViewModel =
-            ViewModelProvider(this).get(DeviceViewModel::class.java)
+        deviceViewModel = ViewModelProvider(this).get(DeviceViewModel::class.java)
 
         _binding = FragmentDeviceBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -88,11 +89,15 @@ class DeviceFragment : Fragment() {
         val buttonUpdate: Button = binding.buttonCheckStatus
         buttonUpdate.setOnClickListener {
             deviceViewModel.hasAvailableDevices(requireContext())
-            deviceViewModel.checkPermission(requireContext())
             deviceViewModel.getConnectedDevice(requireContext())
         }
 
         return root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        deviceViewModel.checkPermission(requireContext())
     }
 
     override fun onPause() {
