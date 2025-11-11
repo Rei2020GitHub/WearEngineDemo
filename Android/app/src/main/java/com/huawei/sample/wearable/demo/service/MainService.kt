@@ -383,6 +383,7 @@ class MainService : Service() {
     }
 
     // ファイルをウォッチに送信する
+    // 注意：ファイルアクセス権限がない場合、ファイルの送信が失敗する。たとえば、メディアアクセス権限しかない場合、pngファイルは転送できるが、binやtxtファイルの転送は失敗する
     private fun sendFile(path: String) {
         // ファイルパスが空の場合
         if (path.isBlank()) {
