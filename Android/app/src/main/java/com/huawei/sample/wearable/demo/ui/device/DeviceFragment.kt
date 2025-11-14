@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.huawei.sample.wearable.demo.databinding.FragmentDeviceBinding
 
 class DeviceFragment : Fragment() {
@@ -90,6 +91,15 @@ class DeviceFragment : Fragment() {
         buttonUpdate.setOnClickListener {
             deviceViewModel.hasAvailableDevices(requireContext())
             deviceViewModel.getConnectedDevice(requireContext())
+        }
+
+        val switchWeakup: SwitchMaterial = binding.switchWeakup
+        switchWeakup.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                deviceViewModel.startPingTimer(requireContext(), DeviceViewModel.PING_PERIOD)
+            } else {
+                deviceViewModel.stopPingTimer()
+            }
         }
 
         return root

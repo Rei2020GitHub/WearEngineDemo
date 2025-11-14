@@ -12,7 +12,9 @@ import android.os.Messenger
 import android.os.RemoteException
 import android.util.Log
 import com.huawei.sample.wearable.demo.model.Constant
+import com.huawei.sample.wearable.demo.ui.action.ActionFragment
 import com.huawei.sample.wearable.demo.ui.data.DataFragment
+import com.huawei.sample.wearable.demo.ui.device.DeviceViewModel
 import com.huawei.sample.wearable.demo.ui.file.FileFragment
 import com.huawei.wearengine.HiWear
 import com.huawei.wearengine.common.WearEngineErrorCode
@@ -20,11 +22,14 @@ import com.huawei.wearengine.device.Device
 import com.huawei.wearengine.p2p.CancelFileTransferCallBack
 import com.huawei.wearengine.p2p.FileIdentification
 import com.huawei.wearengine.p2p.P2pClient
+import com.huawei.wearengine.p2p.PingCallback
 import com.huawei.wearengine.p2p.Receiver
 import com.huawei.wearengine.p2p.SendCallback
 import org.json.JSONObject
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.util.Timer
+import kotlin.concurrent.timer
 
 
 class MainService : Service() {
@@ -37,37 +42,48 @@ class MainService : Service() {
         // （Wear Engineと関係ない。フラグメントとサービスのやり取り専用）
         ////////////////////////////////////////////////////////////////
 
+        const val MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_SUCCESS = 101
+        const val MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_FAIL = 102
+
         // スマホからウォッチへのテキスト送信についてのコマンド
 
-        const val MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH = 1
-        const val MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_SUCCESS = 2
-        const val MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_FAIL = 3
+        const val MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH = 201
 
-        // ウォッチからスマホへのテキスト送信についてのコマンド
-
-        const val MESSAGE_SEND_TEXT_FROM_WATCH_TO_PHONE = 4
+        // スマホからウォッチへのアクションの送信についてのコマンド
+        const val MESSAGE_SEND_ACTION_FROM_PHONE_TO_WATCH = 301
+        const val MESSAGE_SEND_AUTO_PING_FROM_PHONE_TO_WATCH = 302
+        const val MESSAGE_STOP_SEND_AUTO_PING_FROM_PHONE_TO_WATCH = 303
 
         // スマホからウォッチへのファイル送信についてのコマンド
 
-        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_START = 5
-        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_PROGRESS = 6
-        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_SUCCESS = 7
-        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_FAIL = 8
+        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_START = 401
+        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_PROGRESS = 402
+        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_SUCCESS = 403
+        const val MESSAGE_SEND_FILE_FROM_PHONE_TO_WATCH_FAIL = 404
 
         // スマホからウォッチへのファイル送信停止についてのコマンド
 
-        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH = 9
-        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH_SUCCESS = 10
-        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH_FAIL = 11
-        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH_RESULT = 12
+        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH = 411
+        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH_SUCCESS = 412
+        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH_FAIL = 413
+        const val MESSAGE_STOP_SEND_FILE_FROM_PHONE_TO_WATCH_RESULT = 414
+
+        // ウォッチからスマホへのテキスト送信についてのコマンド
+
+        const val MESSAGE_SEND_TEXT_FROM_WATCH_TO_PHONE = 1201
 
         // ウォッチからスマホへのファイル送信についてのコマンド
 
-        const val MESSAGE_SEND_FILE_FROM_WATCH_TO_PHONE = 13
+        const val MESSAGE_SEND_FILE_FROM_WATCH_TO_PHONE = 1401
+
+        // Wear Engineの初期化が完了
+        const val MESSAGE_WEAR_ENGINE_INIT_FINISH = 10001
+
 
         const val MESSAGE_TYPE_KEY = "type"
-        const val MESSAGE_TYPE_VALUE_TEXT = 1
-        const val MESSAGE_TYPE_VALUE_JSON_STRING = 2
+        const val MESSAGE_TYPE_VALUE_JSON_STRING = 1
+        const val MESSAGE_TYPE_VALUE_TEXT = 2
+        const val MESSAGE_TYPE_VALUE_ACTION = 3
         const val MESSAGE_DATA_KEY = "data"
 
         const val KEY_DATA = "Data"
@@ -110,6 +126,30 @@ class MainService : Service() {
                     }
                     Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}, path = $path")
                 }
+                // スマホからウォッチへのアクションの送信
+                MESSAGE_SEND_ACTION_FROM_PHONE_TO_WATCH -> {
+                    // メッセージから送信内容のアクションを取得する
+                    val action = message.data.getString(KEY_DATA)
+                    action?.let { action ->
+                        // アクションを送信する
+                        sendAction(action)
+                    }
+                    Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}, action = $action")
+                }
+                // スマホからウォッチへPINGを送信し続ける
+                MESSAGE_SEND_AUTO_PING_FROM_PHONE_TO_WATCH -> {
+                    // メッセージから送信内容のアクションを取得する
+                    val period = message.data.getLong(KEY_DATA)
+                    period?.let { period ->
+                        startPingTimer(period)
+                    }
+                    Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}, period = $period")
+                }
+                // スマホからウォッチへPINGを送信し続けることを止める
+                MESSAGE_STOP_SEND_AUTO_PING_FROM_PHONE_TO_WATCH -> {
+                    stopPingTimer()
+                    Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}")
+                }
                 // その他
                 else -> {
                     Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}")
@@ -129,6 +169,9 @@ class MainService : Service() {
 
     private var dataFragmentMessenger: Messenger? = null
     private var fileFragmentMessenger: Messenger? = null
+    private var actionFragmentMessenger: Messenger? = null
+
+    private var pingTimer: Timer? = null
 
     // ウォッチ側から受信したメッセージ
     private val receiver = object : Receiver {
@@ -180,6 +223,11 @@ class MainService : Service() {
                 fileFragmentMessenger = intent.getParcelableExtra(FileFragment::class.java.simpleName)
                 Log.i(LOG_TAG, "onBind() fileFragmentMessenger = $fileFragmentMessenger")
             }
+            // ActionFragmentに送信するメッセンジャーを登録する
+            if (intent.hasExtra(ActionFragment::class.java.simpleName)) {
+                actionFragmentMessenger = intent.getParcelableExtra(ActionFragment::class.java.simpleName)
+                Log.i(LOG_TAG, "onBind() actionFragmentMessenger = $actionFragmentMessenger")
+            }
         }
 
         return messenger.binder
@@ -201,6 +249,11 @@ class MainService : Service() {
                 fileFragmentMessenger = intent.getParcelableExtra(FileFragment::class.java.simpleName)
                 Log.i(LOG_TAG, "onRebind() fileFragmentMessenger = $fileFragmentMessenger")
             }
+            // ActionFragmentに送信するメッセンジャーを登録する
+            if (intent.hasExtra(ActionFragment::class.java.simpleName)) {
+                actionFragmentMessenger = intent.getParcelableExtra(ActionFragment::class.java.simpleName)
+                Log.i(LOG_TAG, "onBind() actionFragmentMessenger = $actionFragmentMessenger")
+            }
         }
     }
 
@@ -217,6 +270,11 @@ class MainService : Service() {
             if (intent.hasExtra(FileFragment::class.java.simpleName)) {
                 fileFragmentMessenger = intent.getParcelableExtra(FileFragment::class.java.simpleName)
                 Log.i(LOG_TAG, "onStartCommand() fileFragmentMessenger = $fileFragmentMessenger")
+            }
+            // ActionFragmentに送信するメッセンジャーを登録する
+            if (intent.hasExtra(ActionFragment::class.java.simpleName)) {
+                actionFragmentMessenger = intent.getParcelableExtra(ActionFragment::class.java.simpleName)
+                Log.i(LOG_TAG, "onBind() actionFragmentMessenger = $actionFragmentMessenger")
             }
         }
 
@@ -277,6 +335,10 @@ class MainService : Service() {
 
                                     Log.i(LOG_TAG, "init() addOnSuccessListener() Wearable (Smart watch)")
                                     Log.i(LOG_TAG, "init() addOnSuccessListener() ${Constant.WEARABLE_APP_PACKAGE_NAME} = $isAppInstalled")
+
+                                    noticeDataTypeResult(MESSAGE_WEAR_ENGINE_INIT_FINISH, "")
+                                    noticeFileTypeResult(MESSAGE_WEAR_ENGINE_INIT_FINISH, "")
+                                    noticeActionTypeResult(MESSAGE_WEAR_ENGINE_INIT_FINISH, "")
                                 } else {
                                     // Lite Wearable側のアプリのパッケージ名で調べる
                                     p2pClient
@@ -297,6 +359,10 @@ class MainService : Service() {
 
                                                 Log.i(LOG_TAG, "init() addOnSuccessListener() Lite wearable (Sport watch)")
                                                 Log.i(LOG_TAG, "init() addOnSuccessListener() ${Constant.LITE_WEARABLE_APP_PACKAGE_NAME} = $isAppInstalled")
+
+                                                noticeDataTypeResult(MESSAGE_WEAR_ENGINE_INIT_FINISH, "")
+                                                noticeFileTypeResult(MESSAGE_WEAR_ENGINE_INIT_FINISH, "")
+                                                noticeActionTypeResult(MESSAGE_WEAR_ENGINE_INIT_FINISH, "")
                                             }
                                         }
                                         .addOnFailureListener { execption ->
@@ -327,6 +393,16 @@ class MainService : Service() {
         sendJsonString(jsonObject.toString())
     }
 
+    // アクションを送信する
+    private fun sendAction(action: String) {
+        val jsonObject = JSONObject().apply {
+            this.put(MESSAGE_TYPE_KEY, MESSAGE_TYPE_VALUE_ACTION)
+            this.put(MESSAGE_DATA_KEY, action)
+        }
+        // テキストをJsonStringに変換し、デバイスに送信する
+        sendJsonString(jsonObject.toString())
+    }
+
     // テキストをJsonStringに変換し、ウォッチに送信する
     private fun sendJsonString(jsonString: String) {
         if (jsonString.isBlank()) {
@@ -351,14 +427,14 @@ class MainService : Service() {
                                 Log.i(LOG_TAG, "sendJsonString() onSendResult() succeeded - jsonString = $jsonString, resultCode = $resultCode, targetWatchAppPackageName = $targetWatchAppPackageName, targetWatchAppFingerPrint = $targetWatchAppFingerPrint")
 
                                 // ウォッチ側から受信した送信結果をフラグメントに反映させる
-                                noticeDataTypeResult(MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_SUCCESS, jsonString)
+                                noticeDataTypeResult(MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_SUCCESS, jsonString)
                             } else
                             // 送信失敗
                             {
                                 Log.i(LOG_TAG, "sendJsonString() onSendResult() failed - jsonString = $jsonString, resultCode = $resultCode ${WearEngineErrorCode.getErrorMsgFromCode(resultCode)}, targetWatchAppPackageName = $targetWatchAppPackageName, targetWatchAppFingerPrint = $targetWatchAppFingerPrint")
 
                                 // ウォッチ側から受信した送信結果をフラグメントに反映させる
-                                noticeDataTypeResult(MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_FAIL, "")
+                                noticeDataTypeResult(MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_FAIL, "")
                             }
                         }
 
@@ -374,7 +450,7 @@ class MainService : Service() {
 
                         // 送信失敗
                         // 送信結果をフラグメントに反映させる
-                        noticeDataTypeResult(MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_FAIL, "")
+                        noticeDataTypeResult(MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_FAIL, "")
                     }
             }
         } ?: let {
@@ -561,5 +637,65 @@ class MainService : Service() {
                 Log.e(LOG_TAG, "sendMessage() exception : ", remoteException)
             }
         }
+    }
+
+    private fun noticeActionTypeResult(type: Int, text: String) {
+        actionFragmentMessenger?.let { actionFragmentMessenger ->
+            val replyMessage = Message.obtain(null, type)
+                .apply {
+                    data = Bundle().apply {
+                        putString(KEY_DATA, text)
+                    }
+                }
+            try {
+                actionFragmentMessenger.send(replyMessage)
+                Log.i(LOG_TAG, "noticeActionTypeResult() type = $type, text = $text")
+            } catch (remoteException: RemoteException) {
+                Log.e(LOG_TAG, "sendMessage() exception : ", remoteException)
+            }
+        }
+    }
+
+    // デバイスとの通信を試みる（Pingをしてみる）
+    private fun ping(packageName: String) {
+        connectedDevice?.let { connectedDevice ->
+            if (!connectedDevice.isConnected) {
+                Log.i(LOG_TAG, "ping() connectedDevice.isConnected = $connectedDevice.isConnected")
+            } else {
+                HiWear.getP2pClient(applicationContext)
+                    .setPeerPkgName(packageName)
+                    .ping(connectedDevice, object : PingCallback {
+                        override fun onPingResult(errCode: Int) {
+                        }
+                    })
+                    .addOnSuccessListener {
+                        Log.i(LOG_TAG, "ping() addOnSuccessListener()")
+                    }
+                    .addOnFailureListener { execption ->
+                        Log.e(LOG_TAG, "ping() addOnFailureListener() : ", execption)
+                    }
+            }
+        } ?: let {
+            Log.i(LOG_TAG, "ping() connectedDevice is null")
+        }
+    }
+
+    // スマホ側がPINGを送り続けることで、ウォッチ側のアプリが終了されないようにする
+    private fun startPingTimer(period: Long) {
+        targetWatchAppPackageName?.let { packageName ->
+            stopPingTimer()
+
+            pingTimer = timer(period = period) {
+                ping(packageName)
+            }
+        }
+    }
+
+    // PINGの送信を止める
+    private fun stopPingTimer() {
+        pingTimer?.let { pingTimer ->
+            pingTimer.cancel()
+        }
+        pingTimer = null
     }
 }

@@ -46,7 +46,18 @@ export const FILE_MODE2_READ_WRITE = 'RW';
 // スマホ側から受信したメッセージの種類
 // 不明
 export const MESSAGE_TYPE_VALUE_UNKNOWN = 0;
-// テキスト
-export const MESSAGE_TYPE_VALUE_TEXT = 1;
 // Json String
-export const MESSAGE_TYPE_VALUE_JSON_STRING = 2;
+export const MESSAGE_TYPE_VALUE_JSON_STRING = 1;
+// テキスト
+export const MESSAGE_TYPE_VALUE_TEXT = 2;
+// アクション
+export const MESSAGE_TYPE_VALUE_ACTION = 3;
+
+// アクションの種類
+export const ACTION_OPEN = "ACTION_OPEN";
+export const ACTION_UP = "ACTION_UP";
+export const ACTION_LEFT = "ACTION_LEFT";
+export const ACTION_RIGHT = "ACTION_RIGHT";
+export const ACTION_DOWN = "ACTION_DOWN";
+
+export const MOVE_MARGIN = 10;

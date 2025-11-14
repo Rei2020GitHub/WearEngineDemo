@@ -1,0 +1,25 @@
+<stack class="stack-parent"
+       ondragstart="dragstartfunc"
+       ondragend="dragendfunc"
+       @swipe="onSwipe"
+        >
+    <div class="background_container">
+        <image src="common/image/image.jpg"
+               style="
+                       display: flex;
+                       height: 100%;
+                       width: 100%;
+                       margin-left: 0%;
+                       margin-top: 0%;
+                       "
+                />
+    </div>
+    <image src="common/image/me.png"
+           style="
+                   height: 100px;
+                   width: 100px;
+                   left: {{ meLeft }} px;
+                   top: {{ meTop }} px;
+                   "
+            />
+</stack>

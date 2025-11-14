@@ -60,18 +60,18 @@ class DataFragment : Fragment() {
             Log.i(LOG_TAG, "handleMessage() message.what = " + message.what)
 
             when (message.what) {
-                MainService.MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_SUCCESS,
+                MainService.MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_SUCCESS,
                 MainService.MESSAGE_SEND_TEXT_FROM_WATCH_TO_PHONE
                     -> {
-                        val text = message.data.getString(MainService.KEY_DATA)
-                        text?.let { text ->
-                            Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}, text = $text")
+                        val dataString = message.data.getString(MainService.KEY_DATA)
+                        dataString?.let { dataString ->
+                            Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}, dataString = $dataString")
 
-                            val jsonObject = JSONObject(text)
+                            val jsonObject = JSONObject(dataString)
                             dataViewModel.addText(jsonObject.getString(MainService.MESSAGE_DATA_KEY))
                         }
                     }
-                MainService.MESSAGE_SEND_TEXT_FROM_PHONE_TO_WATCH_FAIL
+                MainService.MESSAGE_SEND_JSON_FROM_PHONE_TO_WATCH_FAIL
                     -> {
                         Log.i(LOG_TAG, "handleMessage() message.what = ${message.what}")
                         dataViewModel.addText("Send text fail")

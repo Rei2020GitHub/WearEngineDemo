@@ -1,4 +1,7 @@
-<stack class="stack-parent">
+<stack class="stack-parent"
+       ondragstart="dragstartfunc"
+       ondragend="dragendfunc"
+       @swipe="onSwipe">
     <div class="image_container">
         <image src="{{ imageSrc }}"
                style="

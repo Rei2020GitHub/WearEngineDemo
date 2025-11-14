@@ -23,4 +23,10 @@
         android:label="@string/title_file"
         tools:layout="@layout/fragment_file" />
 
+    <fragment
+        android:id="@+id/navigation_action"
+        android:name="com.huawei.sample.wearable.demo.ui.action.ActionFragment"
+        android:label="@string/title_action"
+        tools:layout="@layout/fragment_action" />
+
 </navigation>

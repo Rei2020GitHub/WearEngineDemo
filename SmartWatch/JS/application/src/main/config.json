@@ -49,11 +49,12 @@
     "js": [
       {
         "pages": [
-          "pages/index/index"
+          "pages/index/index",
+          "pages/action/action"
         ],
         "name": ".HiWearMainAbility",
         "window": {
-          "designWidth": 720,
+          "designWidth": 466,
           "autoDesignWidth": false
         }
       }

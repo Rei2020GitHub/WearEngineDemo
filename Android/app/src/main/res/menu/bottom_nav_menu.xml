@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_file" />
 
+    <item
+        android:id="@+id/navigation_action"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_action" />
+
 </menu>

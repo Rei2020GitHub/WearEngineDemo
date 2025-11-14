@@ -1,5 +1,7 @@
 import { initP2pClient, ping, sendFile, unregisterReceiver } from '../../common/wearEngineManager.js';
-import { FILE_MODE2_READ, FILE_MODE_BINARY, MESSAGE_TYPE_VALUE_TEXT } from '../../common/constant.js';
+import { FILE_MODE2_READ, FILE_MODE_BINARY,
+    MESSAGE_TYPE_VALUE_ACTION,
+    MESSAGE_TYPE_VALUE_TEXT } from '../../common/constant.js';
 import { convertInternalToAbsolute, getMessageData, getMessageType, isImageFile,
     isJsonFile,
     isTxtFile,
@@ -7,6 +9,8 @@ import { convertInternalToAbsolute, getMessageData, getMessageType, isImageFile,
 
 import file from '@system.file';
 import vibrator from '@system.vibrator';
+import router from '@system.router';
+import brightness from '@system.brightness';
 
 let filePath;
 let fileInternalPath;
@@ -26,15 +30,25 @@ export default {
         this.buttonSendTextValue = this.$t('strings.sendtext');
         this.buttonSendFileValue = this.$t('strings.sendfile');
 
-        initP2pClient(this.messageReceiver());
+        brightness.setKeepScreenOn({
+            keepScreenOn: true,
+            success: function () {
+                console.log(`handling success`)
+            },
+            fail: function (data, code) {
+            }
+        })
     },
     onReady() {
 
     },
     onShow() {
+        initP2pClient(this.messageReceiver());
+    },
+    onHide() {
+        unregisterReceiver(this.messageReceiver());
     },
     onDestroy() {
-        unregisterReceiver(this.messageReceiver());
     },
     // Pingのコールバック
     pingCallback() {
@@ -97,6 +111,12 @@ export default {
                         this.message = message;
                         // スマホに返事する
                         sendText("Received: " + message, this.sendTextCallback());
+                    }
+                    // アクションの場合
+                    else if (MESSAGE_TYPE_VALUE_ACTION == getMessageType(data)) {
+                        router.replace({
+                            uri: 'pages/action/action'
+                        })
                     }
                 }
             }.bind(this),
@@ -179,5 +199,40 @@ export default {
     onClickButtonSendFile() {
         // internal://app/のファイルパスを渡し、ファイルをスマホに送信する
         sendFile(fileInternalPath, FILE_MODE_BINARY, FILE_MODE2_READ, this.sendFileCallback());
-    }
+    },
+    // 画面のスワイプイベント
+    onSwipe(event) {
+        // 左スワイプ
+        if (event.direction === 'right') {
+            router.replace({
+                uri: 'pages/action/action'
+            })
+        }
+        // 右スワイプ
+        if (event.direction === 'left') {
+            router.replace({
+                uri: 'pages/action/action'
+            })
+        }
+        // 上スワイプ
+        if (event.direction === 'down') {
+            router.replace({
+                uri: 'pages/action/action'
+            })
+        }
+        // 下スワイプ
+        if (event.direction === 'up') {
+            router.replace({
+                uri: 'pages/action/action'
+            })
+        }
+    },
+    dragstartfunc(e) {
+        this.start = e.globalX
+    },
+    dragendfunc(e) {
+        var temp = e.globalX
+        if(temp - this.start > 0) {
+        }
+    },
 };

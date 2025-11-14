@@ -14,6 +14,8 @@ import com.huawei.wearengine.device.Device
 import com.huawei.wearengine.monitor.MonitorItem
 import com.huawei.wearengine.monitor.MonitorListener
 import com.huawei.wearengine.p2p.PingCallback
+import java.util.Timer
+import kotlin.concurrent.timer
 
 
 class DeviceViewModel : ViewModel() {
@@ -30,6 +32,8 @@ class DeviceViewModel : ViewModel() {
         )
 
         private val MONITOR_ITEM_LIST = listOf<MonitorItem>(MonitorItem.MONITOR_ITEM_LOW_POWER, MonitorItem.MONITOR_CHARGE_STATUS)
+
+        const val PING_PERIOD: Long = 1000 * 30
     }
 
     private val _textHasAvailableDevices = MutableLiveData<String>().apply {
@@ -100,6 +104,8 @@ class DeviceViewModel : ViewModel() {
     private var connectedDevice: Device? = null
     private var targetWatchAppPackageName: String? = null
     private var targetWatchAppFingerPrint: String? = null
+
+    private var pingTimer: Timer? = null
 
     // デバイスがあるかどうかを確認する
     fun hasAvailableDevices(context: Context) {
@@ -507,5 +513,24 @@ class DeviceViewModel : ViewModel() {
             _textLog.value = _textLog.value + "ping() connectedDevice is null\n"
             Log.i(LOG_TAG, "ping() connectedDevice is null")
         }
+    }
+
+    // スマホ側がPINGを送り続けることで、ウォッチ側のアプリが終了されないようにする
+    fun startPingTimer(context: Context, period: Long) {
+        targetWatchAppPackageName?.let { packageName ->
+            stopPingTimer()
+
+            pingTimer = timer(period = period) {
+                ping(context, packageName)
+            }
+        }
+    }
+
+    // PINGの送信を止める
+    fun stopPingTimer() {
+        pingTimer?.let { pingTimer ->
+            pingTimer.cancel()
+        }
+        pingTimer = null
     }
 }
