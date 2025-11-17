@@ -2,6 +2,7 @@ import { MESSAGE_TYPE_VALUE_TEXT, MESSAGE_TYPE_VALUE_UNKNOWN } from './constant'
 import { sendJsonString } from './wearEngineManager';
 import fileUri from '@ohos.file.fileuri';
 import featureAbility from '@ohos.ability.featureAbility';
+import window from '@ohos.window';
 const context = featureAbility.getContext();
 
 // スマホ側から受信したメッセージの種類を取得する
@@ -67,6 +68,11 @@ const isTxtFile = (path) => {
     return false;
 }
 
+const setWindowKeepScreenOn = async (flag) => {
+    let windowClass = await window.getLastWindow(this.context);
+    await windowClass.setWindowKeepScreenOn(flag);
+}
+
 export {
     getMessageType,
     getMessageData,
@@ -75,4 +81,5 @@ export {
     isImageFile,
     isJsonFile,
     isTxtFile,
+    setWindowKeepScreenOn,
 }

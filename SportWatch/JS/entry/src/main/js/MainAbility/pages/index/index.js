@@ -23,22 +23,15 @@ export default {
         this.buttonPingValue = this.$t('strings.ping');
         this.buttonSendTextValue = this.$t('strings.sendtext');
         this.buttonSendFileValue = this.$t('strings.sendfile');
-
-        brightness.setKeepScreenOn({
-            keepScreenOn: true,
-            success: function () {
-                console.log(`handling success`)
-            },
-            fail: function (data, code) {
-            }
-        })
     },
     onReady() {
     },
     onShow() {
+        brightness.setKeepScreenOn(this.setKeepScreenOnOptions(true));
         initP2pClient(this.messageReceiver());
     },
     onHide() {
+        brightness.setKeepScreenOn(this.setKeepScreenOnOptions(false));
         unregisterReceiver(this.messageReceiver());
     },
     onDestroy() {
@@ -178,6 +171,17 @@ export default {
             complete: function(ret) {
                 console.log('vibrate is completed');
             }.bind(this),
+        }
+    },
+    // スリープさせないコールバック
+    setKeepScreenOnOptions(keepScreenOn) {
+        return {
+            keepScreenOn: keepScreenOn,
+            success: function () {
+                console.log(`handling success`)
+            },
+            fail: function (data, code) {
+            }
         }
     },
     onClickButtonPing() {

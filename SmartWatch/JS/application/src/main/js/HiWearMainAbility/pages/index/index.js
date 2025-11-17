@@ -5,7 +5,8 @@ import { FILE_MODE2_READ, FILE_MODE_BINARY,
 import { convertInternalToAbsolute, getMessageData, getMessageType, isImageFile,
     isJsonFile,
     isTxtFile,
-    sendText } from '../../common/util.js';
+    sendText,
+    setWindowKeepScreenOn} from '../../common/util.js';
 
 import file from '@system.file';
 import vibrator from '@system.vibrator';
@@ -42,10 +43,12 @@ export default {
     onReady() {
 
     },
-    onShow() {
+    async onShow() {
+        await setWindowKeepScreenOn(true);
         initP2pClient(this.messageReceiver());
     },
-    onHide() {
+    async onHide() {
+        await setWindowKeepScreenOn(false);
         unregisterReceiver(this.messageReceiver());
     },
     onDestroy() {

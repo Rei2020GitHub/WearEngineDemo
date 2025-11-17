@@ -11,7 +11,7 @@ import {
     ACTION_RIGHT,
     ACTION_UP, MESSAGE_TYPE_VALUE_ACTION, MESSAGE_TYPE_VALUE_TEXT,
     MOVE_MARGIN } from '../../common/constant.js';
-import { getMessageData, getMessageType } from '../../common/util.js';
+import { getMessageData, getMessageType, setWindowKeepScreenOn } from '../../common/util.js';
 
 export default {
     data: {
@@ -29,10 +29,12 @@ export default {
             }
         })
     },
-    onShow() {
+    async onShow() {
+        await setWindowKeepScreenOn(true);
         initP2pClient(this.messageReceiver());
     },
-    onHide() {
+    async onHide() {
+        await setWindowKeepScreenOn(false);
         unregisterReceiver(this.messageReceiver());
     },
     onDestroy() {

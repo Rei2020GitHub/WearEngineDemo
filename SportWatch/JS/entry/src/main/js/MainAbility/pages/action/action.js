@@ -19,19 +19,13 @@ export default {
         meTop: (466 / 2) - (100 / 2),
     },
     onInit() {
-        brightness.setKeepScreenOn({
-            keepScreenOn: true,
-            success: function () {
-                console.log(`handling success`)
-            },
-            fail: function (data, code) {
-            }
-        })
     },
     onShow() {
+        brightness.setKeepScreenOn(this.setKeepScreenOnOptions(true));
         initP2pClient(this.messageReceiver());
     },
     onHide() {
+        brightness.setKeepScreenOn(this.setKeepScreenOnOptions(false));
         unregisterReceiver(this.messageReceiver());
     },
     onDestroy() {
@@ -113,6 +107,17 @@ export default {
             complete: function(ret) {
                 console.log('vibrate is completed');
             }.bind(this),
+        }
+    },
+    // スリープさせないコールバック
+    setKeepScreenOnOptions(keepScreenOn) {
+        return {
+            keepScreenOn: keepScreenOn,
+            success: function () {
+                console.log(`handling success`)
+            },
+            fail: function (data, code) {
+            }
         }
     },
     // 画面のスワイプイベント
