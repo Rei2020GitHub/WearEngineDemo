@@ -18,3 +18,4 @@
 * Wearable App Development (JS) (https://developer.huawei.com/consumer/en/doc/connectivity-Guides/fitnesswatch-dev-0000001051423561)
 * Lite Smart Wearables (https://developer.huawei.com/consumer/en/doc/best-practices/bpta-lite-wearable-guide)
 * Wear Engine Reference (https://developer.huawei.com/consumer/en/doc/connectivity-References/api-description-0000001111724474)
+* JavaScript-compatible Web-like Development Paradigm (ArkUI.Full) (https://developer.huawei.com/consumer/en/doc/harmonyos-references/arkui-js-full-comp)

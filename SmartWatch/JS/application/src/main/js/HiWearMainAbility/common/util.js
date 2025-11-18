@@ -68,6 +68,7 @@ const isTxtFile = (path) => {
     return false;
 }
 
+// スリープ禁止モード
 const setWindowKeepScreenOn = async (flag) => {
     let windowClass = await window.getLastWindow(this.context);
     await windowClass.setWindowKeepScreenOn(flag);

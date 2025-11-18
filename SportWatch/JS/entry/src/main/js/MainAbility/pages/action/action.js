@@ -15,6 +15,8 @@ import { getMessageData, getMessageType } from '../../common/util.js';
 
 export default {
     data: {
+        imageHeight: 100,
+        imageWidth: 100,
         meLeft: (466 / 2) - (100 / 2),
         meTop: (466 / 2) - (100 / 2),
     },
@@ -154,5 +156,15 @@ export default {
         var temp = e.globalX
         if(temp - this.start > 0) {
         }
+    },
+    // 拡大
+    onClickUiZoomIn() {
+        this.imageHeight += 5;
+        this.imageWidth += 5;
+    },
+    // 縮小
+    onClickUiZoomOut() {
+        this.imageHeight -= 5;
+        this.imageWidth -= 5;
     },
 };

@@ -13,10 +13,18 @@ import {
     MOVE_MARGIN } from '../../common/constant.js';
 import { getMessageData, getMessageType, setWindowKeepScreenOn } from '../../common/util.js';
 
+const MAX_WIDTH = 466;
+const MAX_HEIGHT = 466;
+
+let imageLeft = 0;
+let imageTop = 0;
+let imageWidth = 466;
+let imageHeight = 466;
+
 export default {
     data: {
-        meLeft: (466 / 2) - (100 / 2),
-        meTop: (466 / 2) - (100 / 2),
+        meLeft: 0,
+        meTop: 0,
         message: 'Message',
     },
     onInit() {
@@ -32,6 +40,8 @@ export default {
     async onShow() {
         await setWindowKeepScreenOn(true);
         initP2pClient(this.messageReceiver());
+
+        this.drawCanvas();
     },
     async onHide() {
         await setWindowKeepScreenOn(false);
@@ -49,8 +59,6 @@ export default {
                 console.log("messageReceiver() - onFailure")
             }.bind(this),
             onReceiveMessage: async function (data) {
-                this.message = "Debug 1";
-
                 // メッセージの種類がファイルの場合
                 if (data && data.isFileType) {
                     console.log("messageReceiver() - onReceiveMessage : Type = File");
@@ -62,8 +70,6 @@ export default {
                 // メッセージの種類がファイル以外の場合
                 {
                     console.log("messageReceiver() - onReceiveMessage : Type = text, data = " + data);
-
-                    this.message = "Debug 2";
 
                     // テキストの場合
                     if (MESSAGE_TYPE_VALUE_TEXT == getMessageType(data)) {
@@ -156,5 +162,38 @@ export default {
         var temp = e.globalX
         if(temp - this.start > 0) {
         }
+    },
+    // 拡大
+    onClickUiZoomIn() {
+        imageLeft -= 5;
+        imageTop -= 5;
+        imageWidth += 10;
+        imageHeight += 10;
+        this.drawCanvas();
+    },
+    //　縮小
+    onClickUiZoomOut() {
+        imageLeft += 5;
+        imageTop += 5;
+        imageWidth -= 10;
+        imageHeight -= 10;
+        this.drawCanvas();
+    },
+    // 画像の描画
+    drawCanvas() {
+        const el = this.$refs.canvas;
+        var ctx = el.getContext('2d');
+
+        var img = new Image();
+        img.src = 'common/image/image.jpg';
+        img.onload = function () {
+            console.log('Image load success');
+            ctx.fillStyle = '#FF000000';
+            ctx.fillRect(0, 0, MAX_WIDTH, MAX_HEIGHT);
+            ctx.drawImage(img, imageLeft, imageTop, imageWidth, imageHeight);
+        };
+        img.onerror = function () {
+            console.error('Image load fail');
+        };
     },
 };

@@ -3,17 +3,15 @@
        ondragend="dragendfunc"
        @swipe="onSwipe"
         >
-    <div class="background_container">
-        <image src="common/image/image.jpg"
-               style="
-                       display: flex;
-                       height: 100%;
-                       width: 100%;
-                       margin-left: 0%;
-                       margin-top: 0%;
-                       "
-                />
-    </div>
+    <canvas ref="canvas"
+            style="
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    left: 0%;
+                    top: 0%;
+                    "
+            />
     <image src="common/image/me.png"
            style="
                    height: 100px;
@@ -25,4 +23,27 @@
     <text class="message">
         {{ message }}
     </text>
+    <image class="image"
+           src="common/image/zoom_in.png"
+           style="
+                   display: flex;
+                   height: 15%;
+                   width: 15%;
+                   left: 25%;
+                   top: 25%;
+                   "
+           @click="onClickUiZoomIn"
+            />
+
+    <image class="image"
+           src="common/image/zoom_out.png"
+           style="
+                   display: flex;
+                   height: 15%;
+                   width: 15%;
+                   right: 25%;
+                   top: 25%;
+                   "
+           @click="onClickUiZoomOut"
+            />
 </stack>
