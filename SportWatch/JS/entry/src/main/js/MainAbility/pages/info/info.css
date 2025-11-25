@@ -1,0 +1,37 @@
+.parent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 454px;
+    height: 454px;
+}
+.title {
+    font-size: 32px;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 454px;
+    height: 60px;
+    top: 100px;
+    background-color: red;
+}
+.messageList {
+    width: 454px;
+    height: 334px;
+}
+.messageItem {
+    width: 454px;
+}
+.message {
+    font-size: 32px;
+    text-align: left;
+    width: 454px;
+    padding-left: 70px;
+    padding-right: 70px;
+    background-color: transparent;
+}
+.back {
+    width: 454px;
+    height: 60px;
+    text-align: center;
+    background-color: blue;
+}

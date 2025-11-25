@@ -32,7 +32,8 @@
       {
         "pages": [
           "pages/index/index",
-          "pages/action/action"
+          "pages/action/action",
+          "pages/info/info"
         ],
         "name": ".MainAbility"
       }

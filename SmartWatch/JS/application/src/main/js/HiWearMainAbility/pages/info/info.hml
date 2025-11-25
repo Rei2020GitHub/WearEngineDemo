@@ -1,0 +1,23 @@
+<div class="parent"
+     ondragstart="dragstartfunc"
+     ondragend="dragendfunc"
+        >
+    <text class="title">
+        {{ title }}
+    </text>
+    <list class="messageList"
+          ref="listObj"
+            >
+        <list-item class="messageItem"
+                   style="height: {{ messageItemHeight }}px;"
+                   for="{{ messageList }}">
+            <text class="message">{{ $item.message }}</text>
+        </list-item>
+    </list>
+    <input class="back"
+           type="button"
+           value="{{ buttonMessage }}"
+           @click="onClickBack"
+            >
+    </input>
+</div>

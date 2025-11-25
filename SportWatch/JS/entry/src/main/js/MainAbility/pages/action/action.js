@@ -149,14 +149,6 @@ export default {
             })
         }
     },
-    dragstartfunc(e) {
-        this.start = e.globalX
-    },
-    dragendfunc(e) {
-        var temp = e.globalX
-        if(temp - this.start > 0) {
-        }
-    },
     // 拡大
     onClickUiZoomIn() {
         this.imageHeight += 5;

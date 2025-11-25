@@ -59,6 +59,28 @@ const isTxtFile = (path) => {
     return false;
 }
 
+// 半角文字数をカウントする
+const halfCharTotal = (str) => {
+    let total = 0;
+    for (let i = 0; i < str.length; i++) {
+        if (str.charCodeAt(i) <= 127) {
+            total += 1;
+        }
+    }
+    return total;
+}
+
+// 全角文字数をカウントする
+const fullCharTotal = (str) => {
+    let total = 0;
+    for (let i = 0; i < str.length; i++) {
+        if (str.charCodeAt(i) > 127) {
+            total += 1;
+        }
+    }
+    return total;
+}
+
 export {
     getMessageType,
     getMessageData,
@@ -66,4 +88,6 @@ export {
     isBinFile,
     isJsonFile,
     isTxtFile,
+    halfCharTotal,
+    fullCharTotal,
 }

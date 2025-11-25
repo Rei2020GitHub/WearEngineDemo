@@ -201,7 +201,7 @@ export default {
         // 左スワイプ
         if (event.direction === 'right') {
             router.replace({
-                uri: 'pages/action/action'
+                uri: 'pages/info/info'
             })
         }
         // 右スワイプ
@@ -221,14 +221,6 @@ export default {
             router.replace({
                 uri: 'pages/action/action'
             })
-        }
-    },
-    dragstartfunc(e) {
-        this.start = e.globalX
-    },
-    dragendfunc(e) {
-        var temp = e.globalX
-        if(temp - this.start > 0) {
         }
     },
 };

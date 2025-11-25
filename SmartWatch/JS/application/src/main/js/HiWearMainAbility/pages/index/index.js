@@ -11,7 +11,6 @@ import { convertInternalToAbsolute, getMessageData, getMessageType, isImageFile,
 import file from '@system.file';
 import vibrator from '@system.vibrator';
 import router from '@system.router';
-import brightness from '@system.brightness';
 
 let filePath;
 let fileInternalPath;
@@ -30,15 +29,6 @@ export default {
         this.buttonPingValue = this.$t('strings.ping');
         this.buttonSendTextValue = this.$t('strings.sendtext');
         this.buttonSendFileValue = this.$t('strings.sendfile');
-
-        brightness.setKeepScreenOn({
-            keepScreenOn: true,
-            success: function () {
-                console.log(`handling success`)
-            },
-            fail: function (data, code) {
-            }
-        })
     },
     onReady() {
 
@@ -208,7 +198,7 @@ export default {
         // 左スワイプ
         if (event.direction === 'right') {
             router.replace({
-                uri: 'pages/action/action'
+                uri: 'pages/info/info'
             })
         }
         // 右スワイプ

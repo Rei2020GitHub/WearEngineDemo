@@ -1,6 +1,4 @@
 <stack class="stack-parent"
-       ondragstart="dragstartfunc"
-       ondragend="dragendfunc"
        @swipe="onSwipe"
         >
     <div class="background_container">

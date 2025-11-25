@@ -2,7 +2,6 @@ import { initP2pClient, unregisterReceiver } from '../../common/wearEngineManage
 
 import vibrator from '@system.vibrator';
 import router from '@system.router';
-import brightness from '@system.brightness';
 
 import {
     ACTION_DOWN,
@@ -28,14 +27,6 @@ export default {
         message: 'Message',
     },
     onInit() {
-        brightness.setKeepScreenOn({
-            keepScreenOn: true,
-            success: function () {
-                console.log(`handling success`)
-            },
-            fail: function (data, code) {
-            }
-        })
     },
     async onShow() {
         await setWindowKeepScreenOn(true);
