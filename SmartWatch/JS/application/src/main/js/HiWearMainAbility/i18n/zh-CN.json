@@ -6,6 +6,7 @@
     "ping": "Ping",
     "sendtext": "发送文字",
     "sendfile": "发送文档",
-    "back": "返回"
+    "back": "返回",
+    "loading": "读取中"
   }
 }

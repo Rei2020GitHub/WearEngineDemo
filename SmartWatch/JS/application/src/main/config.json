@@ -51,7 +51,8 @@
         "pages": [
           "pages/index/index",
           "pages/action/action",
-          "pages/info/info"
+          "pages/info/info",
+          "pages/heavyPage/heavyPage"
         ],
         "name": ".HiWearMainAbility",
         "window": {

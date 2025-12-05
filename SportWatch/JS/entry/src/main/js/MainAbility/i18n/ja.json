@@ -6,6 +6,7 @@
     "ping": "Ping",
     "sendtext": "テキスト送信",
     "sendfile": "ファイル送信",
-    "back": "戻る"
+    "back": "戻る",
+    "loading": "読み込み中"
   }
 }

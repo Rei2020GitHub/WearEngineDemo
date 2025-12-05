@@ -213,7 +213,7 @@ export default {
         // 上スワイプ
         if (event.direction === 'down') {
             router.replace({
-                uri: 'pages/action/action'
+                uri: 'pages/heavyPage/heavyPage'
             })
         }
         // 下スワイプ

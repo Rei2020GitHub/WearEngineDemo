@@ -1,0 +1,740 @@
+<stack class="stack-parent"
+       ondragstart="dragstartfunc"
+       ondragend="dragendfunc"
+       @swipe="onSwipe"
+        >
+    <image if="{{ loading }}"
+           src="{{ imageBackgroundSrc }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc1 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc2 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc3 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc4 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc5 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc6 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc7 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc8 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc9 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc10 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc11 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc12 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc13 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc14 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc15 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc16 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc17 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc18 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc19 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc20 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc21 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc22 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc23 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc24 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc25 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc26 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc27 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc28 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc29 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc30 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc31 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc32 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc33 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc34 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc35 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc36 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc37 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc38 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc39 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc40 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc41 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc42 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc43 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc44 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc45 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc46 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc47 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc48 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc49 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc50 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc51 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc52 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc53 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc54 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc55 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc56 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc57 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc58 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc59 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc60 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc61 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc62 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc63 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc64 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc65 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc66 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc67 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc68 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc69 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc70 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc71 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc72 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc73 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc74 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc75 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc76 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc77 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc78 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc79 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+    <image if="{{ !loading }}"
+           src="{{ imageSrc80 }}"
+           style="
+                   height: 100%;
+                   width: 100%;
+                   left: 0%;
+                   top: 0%;
+                   "
+            />
+
+    <text if="{{ loading }}"
+          class="message">
+        {{ message }}
+    </text>
+</stack>
