@@ -41,6 +41,8 @@
         "icon": "$media:icon",
         "description": "$string:HiWearMainAbility_desc",
         "label": "$string:HiWearMainAbility_label",
+        "startWindowIcon": "$media:icon",
+        "startWindowBackground": "$color:start_window_background",
         "type": "page",
         "visible": true,
         "launchType": "standard"
