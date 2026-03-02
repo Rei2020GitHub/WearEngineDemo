@@ -22,6 +22,8 @@ Using the three projects above, we will demonstrate two-way text communication a
 
 Currently, the only image format that Lite Wearable can display is bin, which is not a commonly used format. Therefore, if you want to send an image to Lite Wearable and display it, you have no choice but to send a bin file. The BinDemo project shows the steps to convert an image to a bin file.
 
+## Huawei Wear Engine Fingerprint Generator
+[Huawei Wear Engine Fingerprint Generator](https://Rei2020GitHub.github.io/WearEngineDemo/fingerprint.html)
 
 ## Development environment
 * Android Studio Giraffe | 2022.3.1 Patch 2

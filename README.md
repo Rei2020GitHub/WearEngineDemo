@@ -23,7 +23,10 @@ SmartWatch/JSプロジェクトは、SportWatch/JSプロジェクトをもとに
 現時点のLite Wearableでは、表示できる画像のフォーマットはbinであり、一般的に使われない形式です。そのため、Lite Wearableに画像を送信して表示させることをやる場合、binファイルを送るしかありません。BinDemoプロジェクトでは、画像をbinファイルに変換する手順が示されます。
 
 ## ファーウェイWear Engine SDKの実装
-こちらの[ガイド](./Guide.md)をご参照ください
+こちらの[ガイド](./Guide.md)をご参照ください。
+
+## Huawei Wear Engine フィンガープリント生成ツール
+こちらの[Huawei Wear Engine フィンガープリント生成ツール](https://Rei2020GitHub.github.io/WearEngineDemo/fingerprint.html)を利用すれば、フィンガープリントは簡単に生成されます。
 
 ## 開発環境
 * Android Studio Giraffe | 2022.3.1 Patch 2

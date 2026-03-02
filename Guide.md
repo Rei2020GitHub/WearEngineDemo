@@ -84,6 +84,9 @@ p2pClient.setPeerPkgName("com.huawei.sample.wearable.sportwatch.demo")
 4. Base64のツール（[https://www.tomeko.net/online_tools/hex_to_base64.php](https://www.tomeko.net/online_tools/hex_to_base64.php)）を使い、その値をBase64に変換します。
 5. フィンガープリント = [Lite wearable側のアプリのパッケージ名]_[公開キーのbase64の値]
 
+#### Huawei Wear Engine フィンガープリント生成ツール
+こちらの[Huawei Wear Engine フィンガープリント生成ツール](https://Rei2020GitHub.github.io/WearEngineDemo/fingerprint.html)を利用すれば、フィンガープリントは簡単に生成されます。
+
 ### Lite Wearable
 * [DevEco Studio]を起動し、[Create Project]ボタンをクリックし、[[Lite]Empty Ability]を選びます。
 ![image.png](./Guide/f95a9eba-c4cd-4902-9eca-a834af3521b9.png)

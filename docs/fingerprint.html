@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huawei Wear Engine Fingerprint Tool</title>
+    <style>
+        body { font-family: -apple-system, system-ui, sans-serif; max-width: 850px; margin: 30px auto; background: #f4f4f7; color: #333; padding: 0 20px; line-height: 1.5; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h1 { color: #d62419; text-align: center; margin-bottom: 30px; }
+        h2 { border-left: 4px solid #d62419; padding-left: 12px; font-size: 1.1rem; color: #444; margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #555; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        input:focus { border-color: #d62419; outline: none; }
+        button.primary-btn { width: 100%; padding: 15px; background: #d62419; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        button.primary-btn:hover { background: #b01e15; }
+        .result-area { display: none; border-top: 5px solid #d62419; }
+        .res-item { margin-bottom: 20px; }
+        .res-box { background: #f8f9fa; padding: 12px; border: 1px solid #e0e0e0; border-radius: 4px; word-break: break-all; font-family: monospace; font-size: 13px; color: #111; margin-top: 6px; cursor: pointer; position: relative; }
+        .res-box:hover { background: #fff; border-color: #d62419; }
+        .res-box::after { content: "Copy"; position: absolute; right: 10px; top: 5px; font-size: 10px; color: #999; border: 1px solid #ddd; padding: 2px 4px; border-radius: 3px; background: white; }
+        .tag-title { font-size: 13px; color: #d62419; font-weight: bold; }
+        .hint-text { font-size: 12px; color: #666; margin-top: 4px; display: block; }
+        .code-snippet { background: #eee; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 25px; border-radius: 25px; display: none; z-index: 1000; }
+        .footer { text-align: center; font-size: 12px; color: #999; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <h1 id="ui-title"></h1>
+
+    <div class="card">
+        <h2 id="ui-sec1"></h2>
+        <div class="input-group">
+            <label id="ui-label-pkg"></label>
+            <input type="text" id="androidPkg" placeholder="...">
+        </div>
+        <div class="input-group">
+            <label id="ui-label-sha"></label>
+            <input type="text" id="sha256" placeholder="...">
+            <span class="hint-text"><span id="ui-hint-cmd"></span>：<code class="code-snippet" id="ui-code-cmd" onclick="copyText(this.innerText)">keytool -list -v -keystore &lt;KeyStore&gt;</code></span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 id="ui-sec2"></h2>
+        <div class="input-group">
+            <label id="ui-label-appid"></label>
+            <input type="text" id="watchAppId" placeholder="...">
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 id="ui-sec3"></h2>
+        <div class="input-group">
+            <label id="ui-label-spkg"></label>
+            <input type="text" id="sportWatchPkg" placeholder="...">
+        </div>
+        <div class="input-group">
+            <label id="ui-label-cer"></label>
+            <input type="file" id="cerFile" accept=".cer">
+        </div>
+    </div>
+
+    <button class="primary-btn" id="ui-btn-run" onclick="run()"></button>
+
+    <div id="results" class="card result-area">
+        <h2 id="ui-res-title"></h2>
+        <div id="output"></div>
+        <div style="font-size: 10px; color: #ccc; margin-top: 20px; text-align: right;" id="ts"></div>
+    </div>
+
+    <div id="toast"></div>
+    <div class="footer" id="ui-footer"></div>
+
+    <script>
+        const i18n = {
+            'zh-CN': {
+                title: '华为 Wear Engine 指纹生成器',
+                sec1: '1. Android 项目信息',
+                label_pkg: 'Android 项目包名',
+                label_sha: 'KeyStore SHA256 值',
+                hint_cmd: '获取命令',
+                sec2: '2. 智能表项目信息',
+                label_appid: '智能表项目 APP ID',
+                sec3: '3. 运动表项目信息',
+                label_spkg: '运动表项目包名',
+                label_cer: '运动表 .cer 证书文档',
+                btn_run: '立即生成指纹',
+                res_title: '计算结果',
+                res_l1: 'Android 项目的华为智能手表指纹 (应用侧配置)',
+                res_l2: 'Android 项目的华为运动手表指纹 (应用侧配置)',
+                res_l3: '华为智能手表项目的 Android 指纹 (手表侧配置)',
+                res_l4: '华为运动手表项目的 Android 指纹 (手表侧配置)',
+                toast_copy: '已复制到剪贴板',
+                footer: '所有操作均在本地浏览器完成。',
+                err_fill: '请完整填写所有信息'
+            },
+            'zh-TW': {
+                title: '華為 Wear Engine 指紋生成器',
+                sec1: '1. Android 專案資訊',
+                label_pkg: 'Android 專案包名',
+                label_sha: 'KeyStore SHA256 值',
+                hint_cmd: '獲取指令',
+                sec2: '2. 智慧手錶專案資訊',
+                label_appid: '智慧手錶專案 APP ID',
+                sec3: '3. 運動手錶專案資訊',
+                label_spkg: '運動手錶專案包名',
+                label_cer: '運動手錶 .cer 憑證檔案',
+                btn_run: '立即生成指紋',
+                res_title: '計算結果',
+                res_l1: 'Android 專案的華為智慧手錶指紋 (應用側配置)',
+                res_l2: 'Android 專案的華為運動手錶指紋 (應用側配置)',
+                res_l3: '華為智慧手錶專案的 Android 指紋 (手錶側配置)',
+                res_l4: '華為運動手錶專案的 Android 指紋 (手錶側配置)',
+                toast_copy: '已複製到剪貼簿',
+                footer: '所有操作均在本地瀏覽器完成。',
+                err_fill: '請完整填寫所有資訊'
+            },
+            'en': {
+                title: 'Huawei Wear Engine Fingerprint Generator',
+                sec1: '1. Android Project Info',
+                label_pkg: 'Android Package Name',
+                label_sha: 'KeyStore SHA256 Value',
+                hint_cmd: 'Get Command',
+                sec2: '2. HarmonyOS Watch Info',
+                label_appid: 'Watch App ID',
+                sec3: '3. Sports Watch Info',
+                label_spkg: 'Sports Watch Package Name',
+                label_cer: 'Sports Watch .cer Certificate',
+                btn_run: 'Generate Fingerprints',
+                res_title: 'Results',
+                res_l1: 'Huawei Watch Fingerprint for Android (App Config)',
+                res_l2: 'Sports Watch Fingerprint for Android (App Config)',
+                res_l3: 'Android Fingerprint for Huawei Watch (Watch Config)',
+                res_l4: 'Android Fingerprint for Sports Watch (Watch Config)',
+                toast_copy: 'Copied to clipboard',
+                footer: 'All calculations are performed locally in the browser.',
+                err_fill: 'Please fill in all information'
+            },
+            'ja': {
+                title: 'Huawei Wear Engine フィンガープリント生成ツール',
+                sec1: '1. Android プロジェクト情報',
+                label_pkg: 'Android パッケージ名',
+                label_sha: 'KeyStore SHA256 値',
+                hint_cmd: '取得コマンド',
+                sec2: '2. スマートウォッチ情報（Wearable）',
+                label_appid: 'ウォッチ App ID',
+                sec3: '3. スポーツウォッチ情報（Lite Wearable）',
+                label_spkg: 'スポーツウォッチ パッケージ名',
+                label_cer: 'スポーツウォッチ .cer 証明書',
+                btn_run: 'フィンガープリントを生成する',
+                res_title: '計算結果',
+                res_l1: 'Android用 ウェアラブル指紋 (アプリ側設定)',
+                res_l2: 'Android用 スポーツウォッチ指紋 (アプリ側設定)',
+                res_l3: 'ウェアラブル用 Android指紋 (ウォッチ側設定)',
+                res_l4: 'スポーツウォッチ用 Android指紋 (ウォッチ側設定)',
+                toast_copy: 'クリップボードにコピーしました',
+                footer: 'すべての操作はローカルブラウザで実行されます。',
+                err_fill: 'すべての情報を入力してください'
+            }
+        };
+
+        const userLang = (navigator.language || navigator.userLanguage).split('-')[0];
+        let lang = i18n[navigator.language] || i18n[userLang] || i18n['en'];
+
+        function initUI() {
+            document.getElementById('ui-title').innerText = lang.title;
+            document.getElementById('ui-sec1').innerText = lang.sec1;
+            document.getElementById('ui-label-pkg').innerText = lang.label_pkg;
+            document.getElementById('ui-label-sha').innerText = lang.label_sha;
+            document.getElementById('ui-hint-cmd').innerText = lang.hint_cmd;
+            document.getElementById('ui-sec2').innerText = lang.sec2;
+            document.getElementById('ui-label-appid').innerText = lang.label_appid;
+            document.getElementById('ui-sec3').innerText = lang.sec3;
+            document.getElementById('ui-label-spkg').innerText = lang.label_spkg;
+            document.getElementById('ui-label-cer').innerText = lang.label_cer;
+            document.getElementById('ui-btn-run').innerText = lang.btn_run;
+            document.getElementById('ui-res-title').innerText = lang.res_title;
+            document.getElementById('ui-footer').innerText = lang.footer;
+        }
+        initUI();
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt).then(() => {
+                const toast = document.getElementById('toast');
+                toast.innerText = lang.toast_copy;
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 2000);
+            });
+        }
+
+        async function run() {
+            const fileInput = document.getElementById('cerFile');
+            const pkg = document.getElementById('sportWatchPkg').value.trim();
+            const sha = document.getElementById('sha256').value.trim();
+            const appId = document.getElementById('watchAppId').value.trim();
+            const out = document.getElementById('output');
+            const resArea = document.getElementById('results');
+
+            if (!fileInput.files[0] || !pkg || !sha || !appId) {
+                alert(lang.err_fill); return;
+            }
+
+            try {
+                const buffer = await fileInput.files[0].arrayBuffer();
+                const pubKeyB64 = extractPubKey(buffer);
+                const cleanSha = sha.replace(/:/g, '').toUpperCase();
+
+                const data = [
+                    { l: lang.res_l1, v: appId },
+                    { l: lang.res_l2, v: `${pkg}_${pubKeyB64}` },
+                    { l: lang.res_l3, v: cleanSha },
+                    { l: lang.res_l4, v: cleanSha }
+                ];
+
+                out.innerHTML = data.map(d => `
+                    <div class="res-item">
+                        <div class="tag-title">${d.l}</div>
+                        <div class="res-box" onclick="copyText('${d.v}')">${d.v}</div>
+                    </div>
+                `).join('');
+
+                resArea.style.display = 'block';
+                document.getElementById('ts').innerText = new Date().toLocaleString();
+                resArea.scrollIntoView({ behavior: 'smooth' });
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+        }
+
+        function extractPubKey(buffer) {
+            let der = new Uint8Array(buffer);
+            const text = new TextDecoder().decode(der);
+            if (text.includes("-----BEGIN CERTIFICATE-----")) {
+                const parts = text.split("-----BEGIN CERTIFICATE-----");
+                const b64 = parts[parts.length - 1].split("-----END CERTIFICATE-----")[0].replace(/\s/g, '');
+                const binStr = atob(b64);
+                der = new Uint8Array(binStr.length);
+                for (let i = 0; i < binStr.length; i++) der[i] = binStr.charCodeAt(i);
+            }
+            let p = 0;
+            function read() {
+                let tag = der[p++];
+                let len = der[p++];
+                if (len > 0x80) {
+                    let n = len & 0x7F; len = 0;
+                    while (n--) len = (len << 8) | der[p++];
+                }
+                return { tag, len, start: p };
+            }
+            read(); // Seq Cert
+            let tbs = read(); // Seq TBS
+            if (der[p] === 0xA0) { let v = read(); p += v.len; } // Version
+            for (let i = 0; i < 5; i++) { let itm = read(); p += itm.len; } // S/N to Subj
+            read(); // Seq SPKInfo
+            let algo = read(); p += algo.len; // Algo
+            let spk = read(); // BitString
+            const key = der.slice(p + 1, p + spk.len);
+            let s = "";
+            for (let i = 0; i < key.length; i++) s += String.fromCharCode(key[i]);
+            return btoa(s);
+        }
+    </script>
+</body>
+</html>
