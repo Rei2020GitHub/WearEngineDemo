@@ -28,10 +28,12 @@ class FileViewModel : ViewModel() {
     }
 
     fun addText(text: String) {
-        if (textData.value.isEmpty()) {
-            _textData.postValue(text)
-        } else {
-            _textData.postValue(textData.value + "\n" + text)
+        textData.value?.let {
+            if (it.isEmpty()) {
+                _textData.postValue(text)
+            } else {
+                _textData.postValue(textData.value + "\n" + text)
+            }
         }
     }
 }

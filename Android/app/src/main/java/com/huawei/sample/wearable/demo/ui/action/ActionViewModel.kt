@@ -17,10 +17,12 @@ class ActionViewModel : ViewModel() {
     val textLog: LiveData<String> = _textLog
 
     fun addLog(text: String) {
-        if (textLog.value.isEmpty()) {
-            _textLog.postValue(text)
-        } else {
-            _textLog.postValue(textLog.value + "\n" + text)
+        textLog.value?.let {
+            if (it.isEmpty()) {
+                _textLog.postValue(text)
+            } else {
+                _textLog.postValue(textLog.value + "\n" + text)
+            }
         }
     }
 }

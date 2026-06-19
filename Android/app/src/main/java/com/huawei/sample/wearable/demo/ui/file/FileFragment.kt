@@ -223,12 +223,12 @@ class FileFragment : Fragment() {
 
         val buttonSendFile: Button = binding.buttonSendFile
         buttonSendFile.setOnClickListener {
-            sendFile(fileViewModel.selectPath.value)
+            fileViewModel.selectPath.value?.let { path -> sendFile(path) }
         }
 
         val buttonStopSend: Button = binding.buttonStopSend
         buttonStopSend.setOnClickListener {
-            stopSend(fileViewModel.selectPath.value)
+            fileViewModel.selectPath.value?.let { path -> stopSend(path) }
         }
 
         showSendButton()
