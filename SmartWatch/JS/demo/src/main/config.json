@@ -9,15 +9,15 @@
   },
   "deviceConfig": {},
   "module": {
-    "package": "com.huawei.sample.wearable.smartwatch.application",
-    "name": ".application",
+    "package": "com.huawei.sample.wearable.smartwatch.demo",
+    "name": ".demo",
     "mainAbility": ".HiWearMainAbility",
     "deviceType": [
       "wearable"
     ],
     "distro": {
       "deliveryWithInstall": true,
-      "moduleName": "application",
+      "moduleName": "demo",
       "moduleType": "entry",
       "installationFree": false
     },

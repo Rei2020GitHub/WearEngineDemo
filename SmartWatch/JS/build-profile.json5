@@ -41,8 +41,8 @@
   },
   "modules": [
     {
-      "name": "application",
-      "srcPath": "./application",
+      "name": "demo",
+      "srcPath": "./demo",
       "targets": [
         {
           "name": "default",

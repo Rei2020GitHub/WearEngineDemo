@@ -17,7 +17,7 @@
     ],
     "distro": {
       "deliveryWithInstall": true,
-      "moduleName": "application_test",
+      "moduleName": "demo_test",
       "moduleType": "feature",
       "installationFree": false
     },
