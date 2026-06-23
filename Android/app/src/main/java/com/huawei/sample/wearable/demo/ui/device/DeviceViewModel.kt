@@ -421,9 +421,7 @@ class DeviceViewModel : ViewModel() {
                             targetWatchAppFingerPrint = Constant.WEARABLE_APP_FINGER_PRINT
 
                             // デバイスとの通信を試みる（Pingをしてみる）
-                            targetWatchAppPackageName?.let { packageName ->
-                                ping(context, packageName)
-                            }
+                            ping(context)
                         } else {
                             // デバイスにLite Wearableのアプリがインストール済みか調べる
                             HiWear.getP2pClient(context)
@@ -447,9 +445,7 @@ class DeviceViewModel : ViewModel() {
                                         targetWatchAppFingerPrint = Constant.LITE_WEARABLE_APP_FINGER_PRINT
 
                                         // デバイスとの通信を試みる（Pingをしてみる）
-                                        targetWatchAppPackageName?.let { packageName ->
-                                            ping(context, packageName)
-                                        }
+                                        ping(context)
                                     } else
                                     // デバイスがWearableかLite Wearableか特定できない
                                     {
@@ -482,8 +478,16 @@ class DeviceViewModel : ViewModel() {
         }
     }
 
+    fun ping(context: Context) {
+        targetWatchAppPackageName?.let { packageName ->
+            targetWatchAppFingerPrint?.let { fingerPrint ->
+                ping(context, packageName, fingerPrint)
+            }
+        }
+    }
+
     // デバイスとの通信を試みる（Pingをしてみる）
-    private fun ping(context: Context, packageName: String) {
+    private fun ping(context: Context, packageName: String, fingerPrint: String) {
         connectedDevice?.let { connectedDevice ->
             if (!connectedDevice.isConnected) {
                 _textLog.value = _textLog.value + "ping() connectedDevice.isConnected = $connectedDevice.isConnected\n"
@@ -491,19 +495,22 @@ class DeviceViewModel : ViewModel() {
             } else {
                 HiWear.getP2pClient(context)
                     .setPeerPkgName(packageName)
+                    .setPeerFingerPrint(fingerPrint)
                     .ping(connectedDevice, object : PingCallback {
                         override fun onPingResult(errCode: Int) {
                             _textPing.postValue("Ping : $errCode - ${WearEngineErrorCode.getErrorMsgFromCode(errCode)}")
+                            _textLog.postValue(textLog.value + "Ping : $errCode - ${WearEngineErrorCode.getErrorMsgFromCode(errCode)}\n")
+                            Log.i(LOG_TAG, "Ping : $errCode - ${WearEngineErrorCode.getErrorMsgFromCode(errCode)}")
                         }
                     })
                     .addOnSuccessListener {
-                        _textLog.value = _textLog.value + "ping() addOnSuccessListener()\n"
-                        Log.i(LOG_TAG, "ping() addOnSuccessListener()")
+                        _textLog.value = _textLog.value + "ping() addOnSuccessListener() : packageName = $packageName, fingerPrint = $fingerPrint\n"
+                        Log.i(LOG_TAG,"ping() addOnSuccessListener() : packageName = $packageName, fingerPrint = $fingerPrint")
                     }
                     .addOnFailureListener { execption ->
                         _textPing.postValue("Ping : Unknown")
 
-                        _textLog.value = _textLog.value + "ping() addOnFailureListener() execption = $execption" + "\n"
+                        _textLog.value = _textLog.value + "ping() addOnFailureListener() packageName = $packageName, fingerPrint = $fingerPrint, execption = $execption" + "\n"
                         Log.e(LOG_TAG, "ping() addOnFailureListener() : ", execption)
                     }
             }
@@ -518,10 +525,12 @@ class DeviceViewModel : ViewModel() {
     // スマホ側がPINGを送り続けることで、ウォッチ側のアプリが終了されないようにする
     fun startPingTimer(context: Context, period: Long) {
         targetWatchAppPackageName?.let { packageName ->
-            stopPingTimer()
+            targetWatchAppFingerPrint?.let { fingerPrint ->
+                stopPingTimer()
 
-            pingTimer = timer(period = period) {
-                ping(context, packageName)
+                pingTimer = timer(period = period) {
+                    ping(context, packageName, fingerPrint)
+                }
             }
         }
     }

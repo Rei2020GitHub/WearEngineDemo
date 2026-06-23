@@ -93,6 +93,11 @@ class DeviceFragment : Fragment() {
             deviceViewModel.getConnectedDevice(requireContext())
         }
 
+        val buttonPing: Button = binding.buttonPing
+        buttonPing.setOnClickListener {
+            deviceViewModel.ping(requireContext())
+        }
+
         val switchWeakup: SwitchMaterial = binding.switchWeakup
         switchWeakup.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

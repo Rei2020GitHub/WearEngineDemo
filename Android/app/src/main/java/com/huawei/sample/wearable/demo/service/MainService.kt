@@ -657,13 +657,14 @@ class MainService : Service() {
     }
 
     // デバイスとの通信を試みる（Pingをしてみる）
-    private fun ping(packageName: String) {
+    private fun ping(packageName: String, fingerPrint: String) {
         connectedDevice?.let { connectedDevice ->
             if (!connectedDevice.isConnected) {
                 Log.i(LOG_TAG, "ping() connectedDevice.isConnected = $connectedDevice.isConnected")
             } else {
                 HiWear.getP2pClient(applicationContext)
                     .setPeerPkgName(packageName)
+                    .setPeerFingerPrint(fingerPrint)
                     .ping(connectedDevice, object : PingCallback {
                         override fun onPingResult(errCode: Int) {
                         }
@@ -683,10 +684,12 @@ class MainService : Service() {
     // スマホ側がPINGを送り続けることで、ウォッチ側のアプリが終了されないようにする
     private fun startPingTimer(period: Long) {
         targetWatchAppPackageName?.let { packageName ->
-            stopPingTimer()
+            targetWatchAppFingerPrint?.let { fingerPrint ->
+                stopPingTimer()
 
-            pingTimer = timer(period = period) {
-                ping(packageName)
+                pingTimer = timer(period = period) {
+                    ping(packageName, fingerPrint)
+                }
             }
         }
     }

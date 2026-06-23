@@ -133,13 +133,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <Button
+        android:id="@+id/button_ping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:text="Ping"
+        app:layout_constraintTop_toBottomOf="@+id/button_check_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_weakup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
         android:text="Watch app always weakup"
-        app:layout_constraintTop_toBottomOf="@+id/button_check_status"
+        app:layout_constraintTop_toBottomOf="@+id/button_ping"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
