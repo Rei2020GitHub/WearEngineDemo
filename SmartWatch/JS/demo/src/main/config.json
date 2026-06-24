@@ -45,7 +45,7 @@
         "startWindowBackground": "$color:start_window_background",
         "type": "page",
         "visible": true,
-        "launchType": "standard"
+        "launchType": "singleMission"
       }
     ],
     "js": [
